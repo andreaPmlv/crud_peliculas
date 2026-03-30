@@ -1,107 +1,58 @@
 <div id="stars-container">
-  <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
-  <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
-  <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
-  <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+  @for (i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track i) {
+    <div class="star"></div>
+  }
 </div>
 
-<div class="min-h-screen bg-transparent p-2 sm:p-4 md:p-10 flex flex-col items-center">
-  
+<div class="min-h-screen bg-transparent p-4 md:p-10 flex flex-col items-center relative z-10">
   <div class="w-full max-w-5xl">
 
-    <div class="flex flex-col items-center justify-center text-center mb-6 md:mb-10 gap-2">
-      <h1 class="titulo-animado text-3xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Administrador de Películas
-      </h1>
-    </div>
+    <h1 class="text-3xl md:text-4xl font-black text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 uppercase italic">
+        Administrador de Películas
+    </h1>
 
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md mb-8 border border-blue-100">
-      <h3 class="text-xs font-bold text-blue-600 mb-4 uppercase tracking-widest text-center md:text-left">Nueva Película</h3>
-      <div class="flex flex-col gap-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input #tituloInput type="text" placeholder="Título..." 
-            class="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-2xl transition-all duration-300 hover:scale-90 hover:opacity-100">
-          
-          <input #sinopsisInput type="text" placeholder="Sinopsis..." 
-            class="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-2xl transition-all duration-300 hover:scale-90 hover:opacity-100">
-        </div>
-        
-        <div class="flex flex-col sm:flex-row items-center gap-4">
-          <div class="w-full">
-            <input type="file" (change)="onFileSelected($event)" accept="image/*" 
-              class="w-full text-[10px] text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700">
-          </div>
-          <button (click)="agregarConDatos(tituloInput.value, sinopsisInput.value); tituloInput.value=''; sinopsisInput.value=''"
-            class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-8 rounded-lg active:scale-95 shadow-lg">
-            Guardar
-          </button>
-        </div>
+    <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-xl mb-8 border border-white/20">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input #tituloInput type="text" placeholder="Título..." class="bg-white/20 p-3 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500">
+        <input #sinopsisInput type="text" placeholder="Sinopsis..." class="bg-white/20 p-3 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500">
       </div>
+      <button (click)="agregarConDatos(tituloInput.value, sinopsisInput.value); tituloInput.value=''; sinopsisInput.value=''"
+              class="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95">
+        Guardar Película
+      </button>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:hidden">
-      @for (peli of peliculas; track peli.id) {
-        <div class="bg-white p-4 rounded-xl shadow-md border border-slate-200 flex flex-col gap-3 shadow-md transition-shadow duration-300 hover:shadow-2xl">
-          <div class="flex gap-4">
-            <img [src]="peli.poster" class="w-20 h-28 object-cover rounded-lg shadow-sm">
-            <div class="flex flex-col flex-1">
-              <span class="font-bold text-slate-800">{{ peli.titulo }}</span>
-              <div class="flex text-yellow-400 text-sm mb-2">
-                {{ "★".repeat(peli.calificacion) }}
-              </div>
-              <p class="text-slate-500 text-[10px] line-clamp-3">{{ peli.sinopsis }}</p>
-            </div>
-          </div>
-          <div class="flex justify-between items-center pt-3 border-t border-slate-100 shadow-lg transition-shadow duration-300 hover:shadow-2xl">
-            <span class="text-slate-400 font-mono text-xs">ID: {{ peli.id }}</span>
-            <div class="flex gap-2">
-              <button (click)="abrirEditor(peli)" class="p-2 bg-blue-50 text-blue-600 rounded-lg">✏️</button>
-              <button (click)="verSoloDetalles(peli)" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">👁️</button>
-              <button (click)="eliminarPelicula(peli.id)" class="p-2 bg-rose-50 text-rose-600 rounded-lg">🗑️</button>
-            </div>
-          </div>
-        </div>
-      }
-    </div>
-
-    <div class="hidden md:block bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-slate-50 border-b border-slate-200">
+    <div class="hidden md:block bg-white rounded-2xl overflow-hidden shadow-2xl">
+      <table class="w-full text-left">
+        <thead class="bg-slate-100 text-slate-600 uppercase text-xs font-bold">
           <tr>
-            <th class="p-4 font-semibold text-slate-600 text-sm text-center">ID</th>
-            <th class="p-4 font-semibold text-slate-600 text-sm">Película</th>
-            <th class="p-4 font-semibold text-slate-600 text-sm text-center">Calificación</th>
-            <th class="p-4 font-semibold text-slate-600 text-sm text-center">Acciones</th>
+            <th class="p-4 text-center">ID</th>
+            <th class="p-4">Película</th>
+            <th class="p-4 text-center">Calificación</th>
+            <th class="p-4 text-center">Acciones</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
-          @for (peli of peliculas; track peli.id) {
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="p-4 text-center text-slate-400 font-mono text-sm">{{ peli.id }}</td>
+          @for (peli of data(); track peli.id) {
+            <tr class="hover:bg-slate-50 transition-colors text-slate-800">
+              <td class="p-4 text-center font-mono text-slate-400">#{{ peli.id }}</td>
               <td class="p-4">
-                <div class="flex items-start gap-4">
-                  <img [src]="peli.poster" class="w-12 h-16 object-cover rounded shadow-sm transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-2xl hover:rotate-2">
-                  <div class="flex flex-col">
-                    <span class="font-bold text-slate-800">{{ peli.titulo }}</span>
-                    <p class="text-slate-500 text-[10px] line-clamp-2 max-w-xs">{{ peli.sinopsis }}</p>
-                  </div>
-                </div>
+                <div class="font-bold">{{ peli.Title }}</div>
+                <div class="text-xs text-slate-500 line-clamp-1">{{ peli.Sinopsis }}</div>
               </td>
               <td class="p-4 text-center">
-                <div class="flex justify-center gap-1">
-                  @for (num of [1, 2, 3, 4, 5]; track num) {
-                    <button (click)="calificar(peli, num)" 
-                      [class.text-yellow-400]="num <= peli.calificacion"
-                      [class.text-slate-300]="num > peli.calificacion"
-                      class="text-xl transition-transform hover:scale-125">★</button>
+                <div class="flex justify-center gap-1 text-yellow-400">
+                  @for (num of [1,2,3,4,5]; track num) {
+                    <span (click)="calificar(peli, num)" class="cursor-pointer hover:scale-125 transition-transform">
+                      {{ num <= peli.Stars ? '★' : '☆' }}
+                    </span>
                   }
                 </div>
               </td>
               <td class="p-4 text-center">
                 <div class="flex justify-center gap-2">
-                  <button (click)="abrirEditor(peli)" class="p-2 text-blue-500 hover:bg-blue-50 rounded-full">✏️</button>
-                  <button (click)="verSoloDetalles(peli)" class="p-2 text-emerald-500 hover:bg-emerald-50 rounded-full">👁️</button>
-                  <button (click)="eliminarPelicula(peli.id)" class="p-2 text-rose-500 hover:bg-rose-50 rounded-full">🗑️</button>
+                  <button (click)="abrirEditor(peli)" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg">✏️</button>
+                  <button (click)="eliminarPelicula(peli.id)" class="p-2 text-rose-500 hover:bg-rose-50 rounded-lg">🗑️</button>
                 </div>
               </td>
             </tr>
@@ -110,50 +61,34 @@
       </table>
     </div>
 
-    <div *ngIf="peliculaSeleccionada" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex justify-center items-center p-2 sm:p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto flex flex-col md:flex-row animate-in zoom-in duration-300">
+    <div *ngIf="peliculaSeleccionada" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 animate-in zoom-in duration-200 text-slate-800">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-black italic uppercase">Editando</h2>
+          <button (click)="cerrarModal()" class="text-slate-400 text-2xl">✕</button>
+        </div>
         
-        <div class="w-full md:w-1/2 bg-slate-100 relative min-h-[200px] md:h-auto">
-          <img [src]="peliculaSeleccionada.poster" class="w-full h-full object-cover">
-          <div *ngIf="modoEdicion" class="absolute bottom-0 left-0 right-0 p-4 bg-black/60">
-            <input type="file" (change)="onFileSelected($event)" accept="image/*" class="text-[10px] text-white">
-          </div>
+        <div class="space-y-4">
+          <input [(ngModel)]="peliculaSeleccionada.Title" class="w-full border-b-2 border-blue-600 py-2 outline-none text-xl font-bold">
+          <textarea [(ngModel)]="peliculaSeleccionada.Sinopsis" rows="4" class="w-full border-2 border-slate-100 rounded-2xl p-3 outline-none focus:border-blue-600"></textarea>
         </div>
 
-        <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-black text-slate-800 uppercase italic">
-              {{ modoEdicion ? 'Editando' : 'Detalles' }}
-            </h2>
-            <button (click)="cerrarModal()" class="text-slate-400 text-2xl">✕</button>
-          </div>
-
-          <div class="space-y-4">
-            <input [(ngModel)]="peliculaSeleccionada.titulo" [disabled]="!modoEdicion"
-              class="w-full px-4 py-2 bg-slate-50 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-bold disabled:bg-transparent disabled:border-none">
-            
-            <textarea [(ngModel)]="peliculaSeleccionada.sinopsis" [disabled]="!modoEdicion" rows="4"
-              class="w-full px-4 py-2 bg-slate-50 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none text-sm disabled:bg-transparent disabled:border-none resize-none"></textarea>
-          </div>
-
-          <div class="mt-6">
-            <button *ngIf="modoEdicion" (click)="guardarEdicion()" 
-              class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold active:scale-95 shadow-lg">
-              Guardar Cambios
-            </button>
-            <button *ngIf="!modoEdicion" (click)="cerrarModal()" 
-              class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold">
-              Cerrar
-            </button>
-          </div>
-        </div>
+        <button (click)="guardarEdicion()" class="w-full mt-8 bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-blue-700 transition-all">
+          Guardar Cambios
+        </button>
       </div>
     </div>
 
+    <div *ngIf="mostrarNotificacion" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] animate-bounce">
+      <div class="bg-emerald-500 text-white px-8 py-3 rounded-full shadow-2xl font-bold border border-emerald-400">
+        ✅ {{ mensajeExito }}
+      </div>
+    </div>
+
+    <div class="fixed bottom-4 right-4 z-40">
+      <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGFicWcxenhmYWtzejFnM3NwbnBvZDl3a3cwbnR2bHhhN3NvYTRzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uwLmhT7TMcCNNVItcZ/giphy.gif"
+           class="w-24 h-24 object-contain opacity-80" alt="gojo">
+    </div>
+
   </div>
-  <div class="fixed bottom-4 right-4 z-0 opacity-80 hover:opacity-100 transition-opacity">
-  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGFicWcxenhmYWtzejFnM3NwbnBvZDl3a3cwbnR2bHhhN3NvYTRzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uwLmhT7TMcCNNVItcZ/giphy.gif"
-       alt="gojo" 
-       class="w-24 h-24 md:w-32 md:h-32 object-contain">
-</div>
 </div>
